@@ -108,16 +108,16 @@ document.addEventListener("DOMContentLoaded", () => {
 
     function toggleTema() {
         calculator.classList.toggle("dark-mode");
-        const kuduzIcon = "./img/clear_day_24dp_FFFFFF_FILL0_wght400_GRAD0_opsz24.svg"
-        const kechIcon = "./img/bedtime_24dp_1F1F1F_FILL0_wght400_GRAD0_opsz24.svg"
+
         if (document.getElementsByClassName("dark-mode").length) {
 
-            themeIcon.src = kechIcon
+            themeIcon.src="img/bedtime_24dp_1F1F1F_FILL0_wght400_GRAD0_opsz24.svg"
         } else {
-            themeIcon.src = kuduzIcon
+            themeIcon.src = "img/clear_day_24dp_FFFFFF_FILL0_wght400_GRAD0_opsz24.svg"
         }
 
     }
 
     themeToggle.addEventListener("click", toggleTema);
 });
+
