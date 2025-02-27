@@ -1,0 +1,138 @@
+@import url("https://fonts.googleapis.com/css2?family=Comfortaa:wght@300..700&family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=Geist:wght@100..900&family=Heebo:wght@100..900&family=Inika:wght@400;700&family=Karla:ital,wght@0,200..800;1,200..800&family=Markazi+Text:wght@400..700&family=Montserrat:ital,wght@0,100..900;1,100..900&family=Orbitron:wght@400..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=REM:ital,wght@0,100..900;1,100..900&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&family=Rubik:ital,wght@0,300..900;1,300..900&family=Sofia+Sans:ital,wght@0,1..1000;1,1..1000&display=swap");
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Roboto", sans-serif;
+}
+
+body {
+  font-size: 16px;
+  max-width: 230px;
+  margin: 0 auto;
+  margin-top: 25px;
+}
+
+.calculator {
+  background-color: black;
+}
+
+.dark-mode .calculator {
+  background-color: rgb(243, 243, 99);
+}
+
+.nav-calculator {
+  display: flex;
+  text-align: center;
+  padding-top: 10px;
+  justify-content: space-between;
+}
+
+.nav-calculator p {
+  color: rgb(221, 244, 236);
+  margin: 0 auto;
+}
+
+.dark-mode .nav-calculator p {
+  color: black;
+}
+
+.menu-btn {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  background: none;
+  cursor: pointer;
+  align-self: center;
+  border: none;
+}
+
+.themeToggle {
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.calculator-section {
+  width: 216px;
+  height: 140px;
+  margin: 0 auto;
+  margin-top: 15px;
+  background-color: #333333;
+  border-radius: 10px;
+  border: none;
+  margin-left: -7px;
+  color: rgb(221, 244, 236);
+  display: flex;
+  font-size: 28px;
+  text-align: end;
+}
+
+.dark-mode .calculator-section {
+  background-color: white;
+  color: black;
+}
+
+.calculator-section:focus {
+  outline: none;
+}
+
+.calculator-main {
+  background-color: black;
+  margin-left: 14px;
+}
+
+.dark-mode .calculator-main {
+  background-color: rgb(243, 243, 99);
+}
+
+.dark-mode {
+  background-color: rgb(243, 243, 99);
+  color: black;
+}
+
+.dark-mode .number,
+.dark-mode .turn-off,
+.dark-mode .minus-sign,
+.dark-mode .percent-sign,
+.dark-mode .sign-switching,
+.dark-mode .sign-of-being,
+.dark-mode .multiplication-sign,
+.dark-mode .plus-sign,
+.dark-mode .equals-sign,
+.dark-mode .point,
+.dark-mode .plus-sign-btn,
+.dark-mode .square {
+  background-color: rgb(243, 243, 99);
+  color: black;
+  border: 0.5px solid #444;
+}
+
+.number,
+.turn-off,
+.minus-sign,
+.percent-sign,
+.sign-switching,
+.sign-of-being,
+.multiplication-sign,
+.plus-sign,
+.equals-sign,
+.point,
+.plus-sign-btn,
+.square {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: none;
+  margin-right: 10px;
+  margin-top: 10px;
+  background-color: #808080;
+  color: white;
+  margin-bottom: 10px;
+  cursor: pointer;
+}
+.fourth-row {
+  display: flex;
+  gap: 5px;
+}
