@@ -19,26 +19,20 @@ function fetchTodos() {
     3. show error message if fetch failed
   */
   // fetch template -> fetch(url, options)
-  function fetchTodos() {
-    const url = " https://learn.javascript.ru/fetch"; // API manzili
-  
-    fetch(url)
-      .then(response => {
-        if (!response.ok) {
-          throw new Error(`error: ${response.status}`);
-        }
-        return response.json();
-      })
-      .then(data => {
-        const todos = data.slice(0, 10); // Faqat 10 ta topshiriqni olish
-        console.log("10 ta TODO:", todos);
-      })
-      .catch(error => {
-        console.error("Error loading data:", error);
-        alert("An error occurred");
-      });
-  }
-  
+  let fetchedTodos = []
+  fetch(API_URL + "?_limit=10", {
+    method: "GET"
+  }).then(response => response.json()).then(data => {
+    console.log(data)
+    if (data.length) {
+      const todoListElement = document.getElementById("todo-list")
+      for (let i = 0; i < data.length; i++) {
+        let li = document.createElement('li');
+        li.innerHTML = `${data[i].id} <br> ${data[i].title}`
+        todoListElement.appendChild(li)
+      }
+    }
+  })
 }
 
 // ➕ Adding new todo
@@ -60,7 +54,7 @@ function addTodoToDOM(todo) {
   const todoList = document.getElementById("todoList"); // ul,ol
   const li = document.createElement('li');//li yaratish
   li.textContent = todo.title; //todo matn qoyish
-   
+
   /**
     Created li item is your todo item. todo element has 'completed' class to mark it as completed. 
     You have to inhance to li element with: 
@@ -100,7 +94,7 @@ function toggleTodo(id, element) {
     .catch(error => {
       console.error("error:", error);
       alert("Error updating todo status!");
-      
+
       // 2. Agar xatolik bo‘lsa, 'completed' qaytarib qo‘yamiz
       todoItem.classList.toggle("completed");
     });
@@ -114,7 +108,7 @@ function deleteTodo(id, element) {
    2. Show error message if request failed
    3. Remove todo from DOM
   */
-   function deleteTodo(id, element) {
+  function deleteTodo(id, element) {
     fetch(`https://learn.javascript.ru/fetch/${id}`, {
       method: "DELETE",
     })
@@ -133,5 +127,5 @@ function deleteTodo(id, element) {
         alert("Error deleting Todo!");
       });
   }
-  
+
 }
