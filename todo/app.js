@@ -19,6 +19,26 @@ function fetchTodos() {
     3. show error message if fetch failed
   */
   // fetch template -> fetch(url, options)
+  function fetchTodos() {
+    const url = " https://learn.javascript.ru/fetch"; // API manzili
+  
+    fetch(url)
+      .then(response => {
+        if (!response.ok) {
+          throw new Error(`error: ${response.status}`);
+        }
+        return response.json();
+      })
+      .then(data => {
+        const todos = data.slice(0, 10); // Faqat 10 ta topshiriqni olish
+        console.log("10 ta TODO:", todos);
+      })
+      .catch(error => {
+        console.error("Error loading data:", error);
+        alert("An error occurred");
+      });
+  }
+  
 }
 
 // ➕ Adding new todo
@@ -37,26 +57,54 @@ todoForm.addEventListener('submit', event => {
 // helper function to add todo to DOM. use it in fetchTodos and addTodo
 function addTodoToDOM(todo) {
   //! do not delete this line
-  const li = document.createElement('li');
+  const todoList = document.getElementById("todoList"); // ul,ol
+  const li = document.createElement('li');//li yaratish
+  li.textContent = todo.title; //todo matn qoyish
+   
   /**
     Created li item is your todo item. todo element has 'completed' class to mark it as completed. 
     You have to inhance to li element with: 
      - Adding 'title' block to show todo title from todo.title
      - Adding 'actions' block to show actions (complete and delete)
    */
-  todoList.appendChild(li);
+  todoList.appendChild(li);//ul ol ichiga qo'shish
 }
 
 // 🔄 Changing status
 function toggleTodo(id, element) {
   //! do not delete this line
+  const todoItem = element.parentElement.parentElement; // Todo elementini olish
   const completed = !element.parentElement.parentElement.classList.contains('completed');
-
+  todoItem.classList.toggle("completed");//UI yangilash
   /**
    * 1. Implement PUT request to update todo status
    * 2. Show error message if request failed
    * 3. Toggle 'completed' class on todo item
    */
+
+  // 1. PUT so‘rov orqali serverda todo statusini yangilash
+  fetch(`https://learn.javascript.ru/fetch/${id}`, {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ completed: completed }),
+  })
+    .then(response => {
+      if (!response.ok) {
+        throw new Error(`error: ${response.status}`);
+      }
+      return response.json();
+    })
+    .then(data => console.log("Todo updated:", data))
+    .catch(error => {
+      console.error("error:", error);
+      alert("Error updating todo status!");
+      
+      // 2. Agar xatolik bo‘lsa, 'completed' qaytarib qo‘yamiz
+      todoItem.classList.toggle("completed");
+    });
+
 }
 
 // ❌ Remove todo with id
@@ -66,4 +114,24 @@ function deleteTodo(id, element) {
    2. Show error message if request failed
    3. Remove todo from DOM
   */
+   function deleteTodo(id, element) {
+    fetch(`https://learn.javascript.ru/fetch/${id}`, {
+      method: "DELETE",
+    })
+      .then(response => {
+        if (!response.ok) {
+          throw new Error(`error: ${response.status}`);
+        }
+        return response.json();
+      })
+      .then(() => {
+        console.log("Todo deleting:", id);
+        element.parentElement.parentElement.remove(); // UI-dan olib tashlash
+      })
+      .catch(error => {
+        console.error("error:", error);
+        alert("Error deleting Todo!");
+      });
+  }
+  
 }
