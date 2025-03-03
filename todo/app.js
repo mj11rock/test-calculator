@@ -176,15 +176,10 @@ function addTodoToDOM(todo) {
     event.stopPropagation(); // Todo'ni bosganda tasodifan o‘zgarmasligi uchun
     deleteTodo(todo.id, li);
   });
-
-
   li.appendChild(checkbox);
   actions.appendChild(deleteBtn);
   li.appendChild(actions);
   todoList.appendChild(li);
-
-
-
   /**
     Created li item is your todo item. todo element has 'completed' class to mark it as completed. 
     You have to inhance to li element with: 
@@ -216,10 +211,6 @@ async function toggleTodo(id, element) {
    * 2. Show error message if request failed
    * 3. Toggle 'completed' class on todo item
    */
-
-
-
-
 
 //  Remove todo with id
 async function deleteTodo(id, element) {
