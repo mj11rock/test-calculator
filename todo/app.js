@@ -40,10 +40,6 @@ const todoList = document.getElementById('todo-list');
 // }
 // showTask()
 
-
-
-
-
 // 📥 Fetching initial todo when page loaded
 window.addEventListener('DOMContentLoaded', fetchTodos);
 
@@ -200,13 +196,10 @@ async function toggleTodo(id, element) {
     console.error('Error:', error);
     alert('Error updating todo status!');
   }
-} /**
-   * 1. Implement PUT request to update todo status
-   * 2. Show error message if request failed
-   * 3. Toggle 'completed' class on todo item
-   */
+}
 
-//  Remove todo with id
+
+// ❌ Remove todo with id
 async function deleteTodo(id, element) {
   /*
    1. Implement DELETE request to remove todo
