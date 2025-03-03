@@ -118,8 +118,7 @@ function fetchTodos() {
 todoForm.addEventListener('submit', async event => {
   //! do not delete this line
   event.preventDefault();
-
-  /*
+    /*
     1. Implement POST request to add new todo
     2. Add new todo to DOM
     3. Clear input field
@@ -157,16 +156,11 @@ function addTodoToDOM(todo) {
   const checkbox = document.createElement('input');
   checkbox.type = 'checkbox';
   checkbox.classList.add('todo-checkbox');
-
-
-
   // Agar todo avval tugallangan bo‘lsa, checkbox ni belgilash
   checkbox.checked = todo.completed;
-
   if (todo.completed) {
     li.classList.add('completed');
   }
-
   // Matnni bosganda "completed" sinfini qo‘shish yoki olib tashlash
   li.addEventListener('click', () => {
     li.classList.toggle('completed');
