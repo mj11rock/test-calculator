@@ -63,32 +63,26 @@ function fetchTodos() {
       if (data.length) {
         const todoListElement = document.getElementById("todo-list");
         todoListElement.innerHTML = ""; // Eski todo'larni o'chirish
-
         for (let i = 0; i < data.length; i++) {
           const todo = data[i]; // `todo` o‘zgaruvchisini yaratish
 
           let li = document.createElement("li");
-          li.classList.add("todo-item");
-         
+          li.classList.add("todo-item"); 
 
           li.innerHTML = `${todo.id}   ${todo.title}`;
-
           // Checkbox yaratish
           const checkbox = document.createElement("input");
           checkbox.type = "checkbox";
           checkbox.classList.add("todo-checkbox");
           checkbox.checked = todo.completed;
-
           // Checkbox orqali todo-ni completed qilish
           checkbox.addEventListener("change", () => {
             li.classList.toggle("completed", checkbox.checked);
           });
-
           // Agar todo tugallangan bo‘lsa, completed class qo‘shish
           if (todo.completed) {
             li.classList.add("completed");
           }
-
           // O‘chirish tugmasi yaratish
           const deleteBtn = document.createElement("button");
           deleteBtn.textContent = "x";
