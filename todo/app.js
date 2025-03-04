@@ -8,211 +8,71 @@ const todoForm = document.getElementById('todo-form');
 const todoInput = document.getElementById('todo-input');
 const todoList = document.getElementById('todo-list');
 
-// function addTask() {
-//   if (todoInput.value === '') {
-//     alert("you must write something!")
-//   }
-//   else {
-//     let li = document.createElement("li");
-//     li.innerHTML = todoInput.value;
-//     todoList.appendChild(li);
-//     let span = document.createElement("span");
-//     span.innerHTML = "\u00d7";
-//     li.appendChild(span);
-//   }
-//   todoInput.value = "";
-//   saveData();
-// }
-// todoList.addEventListener("click", function (e) {
-//   if (e.target.tagName === "LI") {
-//     e.target.classList.toggle("checked");
-//   }
-//   else if (e.target.tagName === "SPAN") {
-//     e.target.parentElement.remove();
-//     saveData();
-//   }
-// }, false);
-// function saveData() {
-//   localStorage.setItem("data", todoList.innerHTML);
-// }
-// function showTask() {
-//   todoList.innerHTML = localStorage.getItem("data");
-// }
-// showTask()
-
-// 📥 Fetching initial todo when page loaded
-window.addEventListener('DOMContentLoaded', fetchTodos);
-
-// Get initial todos from API
-function fetchTodos() {
-  /*
-    1. read about fetch https://learn.javascript.ru/fetch
-    2. limit the number of tasks to 10
-    3. show error message if fetch failed
-  */
-  fetch(API_URL + "?_limit=10", {
-    method: "GET"
-  })
-    .then(response => response.json())
-    .then(data => {
-      console.log(data);
-      if (data.length) {
-        const todoListElement = document.getElementById("todo-list");
-        todoListElement.innerHTML = ""; // Eski todo'larni o'chirish
-        for (let i = 0; i < data.length; i++) {
-          const todo = data[i]; // `todo` o‘zgaruvchisini yaratish
-
-          let li = document.createElement("li");
-          li.classList.add("todo-item"); 
-
-          li.innerHTML = `${todo.id}   ${todo.title}`;
-          // Checkbox yaratish
-          const checkbox = document.createElement("input");
-          checkbox.type = "checkbox";
-          checkbox.classList.add("todo-checkbox");
-          checkbox.checked = todo.completed;
-          // Checkbox orqali todo-ni completed qilish
-          checkbox.addEventListener("change", () => {
-            li.classList.toggle("completed", checkbox.checked);
-          });
-          // Agar todo tugallangan bo‘lsa, completed class qo‘shish
-          if (todo.completed) {
-            li.classList.add("completed");
-          }
-          // O‘chirish tugmasi yaratish
-          const deleteBtn = document.createElement("button");
-          deleteBtn.textContent = "x";
-          deleteBtn.classList.add("delete-button");
-
-          // O‘chirish tugmasi bosilganda todo-ni o‘chirish
-          deleteBtn.addEventListener("click", (event) => {
-            event.stopPropagation(); // Tasodifan o‘zgarmasligi uchun
-            deleteTodo(todo.id, li);
-          });
-
-          // `li` ga checkbox va delete tugmasini qo‘shish
-          li.prepend(checkbox);
-          li.appendChild(deleteBtn);
-          todoListElement.appendChild(li); // To‘g‘ri elementga qo'shish
-        }
-      }
-    })
-    .catch(error => {
-      console.error("Fetch error:", error);
-      alert("An error occurred while retrieving data!");
-    });
-}
-
-
 // ➕ Adding new todo
 todoForm.addEventListener('submit', async event => {
   //! do not delete this line
   event.preventDefault();
-    /*
-    1. Implement POST request to add new todo
-    2. Add new todo to DOM
-    3. Clear input field
-    4. Show error message if request failed
-  */
+  /*
+  1. Implement POST request to add new todo
+  2. Add new todo to DOM
+  3. Clear input field
+  4. Show error message if request failed
+*/
 
-  const title = todoInput.value.trim(); // Input maydonidagi qiymatni olish
 
-  if (!title) return; // Bo'sh input bo'lsa, hech narsa qilmaymiz
+  const todoText = todoInput.value.trim(); // Foydalanuvchi kiritgan matn
 
-  try {
-    const response = await fetch(API_URL, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ title, completed: false })
-    });
-
-    if (!response.ok) throw new Error('Error adding todo');
-
-    const newTodo = await response.json();
-    addTodoToDOM(newTodo);
-    todoInput.value = '';
-  } catch (error) {
-    console.error('Error:', error);
-    alert('Error adding todo!');
+  if (!todoText) {
+    alert('Please enter a todo!'); // Bo‘sh kiritishdan saqlanish
+    return;
   }
+
+  addTodoToDOM(todoText); // 2. DOM-ga qo‘shish
+  todoInput.value = ''; // 3. Input maydonini tozalash
 });
 
 // helper function to add todo to DOM. use it in fetchTodos and addTodo
-function addTodoToDOM(todo) {
-  //! do not delete this line
-  const li = document.createElement('li');
-  li.textContent = todo.title;
+function addTodoToDOM(todoText) {
 
-  const checkbox = document.createElement('input');
-  checkbox.type = 'checkbox';
-  checkbox.classList.add('todo-checkbox');
-  // Agar todo avval tugallangan bo‘lsa, checkbox ni belgilash
-  checkbox.checked = todo.completed;
-  if (todo.completed) {
-    li.classList.add('completed');
-  }
-  // Matnni bosganda "completed" sinfini qo‘shish yoki olib tashlash
-  li.addEventListener('click', () => {
-    li.classList.toggle('completed');
-  });
+  const li = document.createElement('li'); // Yangi `<li>` yaratish
 
-  const actions = document.createElement('div');
+  li.textContent = todoText; // Matn qo‘shish
 
+  //  Qo‘shimcha tugmalar
+  const toggleBtn = document.createElement('button');
+  toggleBtn.textContent = '';
+  toggleBtn.classList.add('addButton')
+  toggleBtn.addEventListener('click', () => toggleTodo(li));
+  toggleBtn.classList.toggle('active-btn');
   const deleteBtn = document.createElement('button');
   deleteBtn.textContent = 'x';
-  deleteBtn.classList.add('delete-button');
+  deleteBtn.classList.add('delete-btn');
+  deleteBtn.addEventListener('click', () => deleteTodo(li));
 
-  deleteBtn.addEventListener('click', (event) => {
-    event.stopPropagation(); // Todo'ni bosganda tasodifan o‘zgarmasligi uchun
-    deleteTodo(todo.id, li);
-  });
-  li.appendChild(checkbox);
-  actions.appendChild(deleteBtn);
-  li.appendChild(actions);
-  todoList.appendChild(li);
-  /**
-    Created li item is your todo item. todo element has 'completed' class to mark it as completed. 
-    You have to inhance to li element with: 
-     - Adding 'title' block to show todo title from todo.title
-     - Adding 'actions' block to show actions (complete and delete)
-   */
+  li.appendChild(toggleBtn);
+  li.appendChild(deleteBtn);
+
+  todoList.appendChild(li); // Ro‘yxatga qo‘shish
+
 
 }
 
-// 🔄 Changing status
-async function toggleTodo(id, element) {
-  //! do not delete this line
-  let isCompleted = element.classList.contains('completed');
-  try {
-    const response = await fetch(`${API_URL}/${id}`, {
-      method: 'PUT',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ completed: !isCompleted })
-    });
-    if (!response.ok) throw new Error('Error updating todo status');
 
-    element.classList.toggle('completed');
-  } catch (error) {
-    console.error('Error:', error);
-    alert('Error updating todo status!');
-  }
+// 🔄 Changing status
+function toggleTodo(element) {
+  if (!element) return; // Xatolikni oldini olish
+  element.classList.toggle('completed'); // Completed class qo‘shish/olib tashlash
+
 }
 
 
 // ❌ Remove todo with id
-async function deleteTodo(id, element) {
+function deleteTodo(element) {
   /*
    1. Implement DELETE request to remove todo
    2. Show error message if request failed
    3. Remove todo from DOM
   */
-  try {
-    const response = await fetch(`${API_URL}/${id}`, { method: 'DELETE' });
-    if (!response.ok) throw new Error('Error deleting todo');
-
-    element.remove();
-  } catch (error) {
-    console.error('Error:', error);
-    alert('Error deleting todo!');
-  }
+  if (!element) return; // Xatolikni oldini olish
+  element.remove(); // DOM-dan o‘chirish
 }
